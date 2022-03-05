@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dal.CalculateDBContext;
 import dal.ReportDBContext;
 import dal.TypeDBContext;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class ListReportController extends BaseAuthenticationController {
             throws ServletException, IOException {
         TypeDBContext tc = new TypeDBContext();
         ReportDBContext rc = new ReportDBContext();
+        CalculateDBContext cc = new CalculateDBContext();
 
         String raw_typeid = request.getParameter("typeid");
         raw_typeid = (raw_typeid == null || raw_typeid.isEmpty()) ? "-1" : raw_typeid;
@@ -43,9 +45,16 @@ public class ListReportController extends BaseAuthenticationController {
 
         ArrayList<List> lists = rc.getlists(id);
         ArrayList<Type> types = tc.getTypes();
+        int TotalGet = cc.getMoney(1);
+        int TotalPay = cc.getMoney(2);
+        int Total = TotalGet - TotalPay;
+
         request.setAttribute("types", types);
         request.setAttribute("lists", lists);
         request.setAttribute("typeid", id);
+        request.setAttribute("TotalGet", TotalGet);
+        request.setAttribute("TotalPay", TotalPay);
+        request.setAttribute("Total", Total);
         request.getRequestDispatcher("view/report.jsp").forward(request, response);
     }
 

@@ -22,9 +22,9 @@
                 document.getElementById("searchform").submit();
             }
             function deleteRecord(id) {
-                result = confirm("Are you sure?");
+                result = confirm("Bạn có chắc muốn xóa bản ghi số " + id + " ?");
                 if (result) {
-                    window.location.href = "delete?id=" + id;
+                    window.location.href = "xoa?id=" + id;
                 }
             }
         </script>
@@ -32,11 +32,17 @@
     </head>
     <body>
         <form id="searchform" action="baocao" method="GET">
-            Department:<select name="typeid" onchange="submitSearchForm();">
-                <option value="-1">-----Chọn kiểu (chi/tiêu)----</option>
+            Số dư:${requestScope.Total} đ<br/>
+            Khoản chi: ${requestScope.TotalGet} đ<br/>
+            -<br/>
+            Khoản thu:${requestScope.TotalPay} đ<br/>
+            ___________________________________<br/>
+            ${requestScope.Total} đ<br/>
+            Kiểu (chi/tiêu):<select name="typeid" onchange="submitSearchForm();">
+                <option value="-1">-----     Tất cả     -----</option>
                 <c:forEach items="${requestScope.types}" var="t">
                     <option ${(t.ctypeid==requestScope.typeid)?"selected=\"selected\"":"" } 
-                        value="${t.ctypeid}">${t.ctypename}</option>
+                        value="${t.ctypeid}">-----     ${t.ctypename}     -----</option>
                 </c:forEach>                
             </select>
         </form>
@@ -46,9 +52,10 @@
                     <td>STT</td>
                     <td>Ngày/Tháng</td>
                     <td>Tên</td>
-                    <td>Giá(đ)</td>
+                    <td>Số tiền(đ)</td>
                     <td>Ghi chú</td>
                     <td>Loại chi tiêu</td>
+
                 </tr>
                 <c:forEach items="${requestScope.lists}" var="l">
                     <tr>
@@ -58,7 +65,7 @@
                         <td>${l.cprice}</td>
                         <td>${l.cnote}</td>
                         <td>${l.type.ctypename}</td>
-                        <td><a href="edit?id=${l.cid}">Chỉnh sửa</a>
+                        <td><a href="chinhsua?id=${l.cid}">Chỉnh sửa</a>
                             <a href="" onclick="deleteRecord(${l.cid});" >Xóa</a>
                         </td>
                     </tr>        
@@ -68,7 +75,7 @@
         <c:if test="${requestScope.lists.size() == 0}">
             Không có bản ghi nào!
         </c:if>
-        <a href="insert">Insert</a>
+        <a href="them">Thêm</a>
     </body>
 </html>
 
