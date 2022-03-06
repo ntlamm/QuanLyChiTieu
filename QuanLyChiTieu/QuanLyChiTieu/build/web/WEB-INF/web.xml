@@ -8,6 +8,18 @@
         <servlet-name>DSBaoCaoController</servlet-name>
         <servlet-class>controller.ListReportController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertController</servlet-name>
+        <servlet-class>controller.InsertController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditController</servlet-name>
+        <servlet-class>controller.EditController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>controller.DeleteController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
         <url-pattern>/dangnhap</url-pattern>
@@ -15,6 +27,18 @@
     <servlet-mapping>
         <servlet-name>DSBaoCaoController</servlet-name>
         <url-pattern>/baocao</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertController</servlet-name>
+        <url-pattern>/them</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditController</servlet-name>
+        <url-pattern>/chinhsua</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/xoa</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
