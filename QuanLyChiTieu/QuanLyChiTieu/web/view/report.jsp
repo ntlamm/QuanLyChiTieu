@@ -22,12 +22,13 @@
     </head>
     <body>
         <form id="searchform" action="baocao" method="GET">
-            Số dư:${requestScope.Total} đ<br/>
-            Khoản chi: ${requestScope.TotalGet} đ<br/>
+            Số dư:<fmt:formatNumber value="${requestScope.Total}" type="currency"/><br/>
+            Khoản chi:<fmt:formatNumber value="${requestScope.TotalGet}" type="currency"/><br/>
             -<br/>
-            Khoản thu:${requestScope.TotalPay} đ<br/>
+            Khoản thu:<fmt:formatNumber value="${requestScope.TotalPay}" type="currency"/><br/>
             ___________________________________<br/>
-            ${requestScope.Total} đ<br/>
+            <fmt:formatNumber value="${requestScope.Total}" type="currency"/><br/>
+            
             Kiểu (chi/tiêu):<select name="typeid" onchange="submitSearchForm();">
                 <option value="-1">-----     Tất cả     -----</option>
                 <c:forEach items="${requestScope.types}" var="t">
@@ -42,18 +43,20 @@
                     <td>STT</td>
                     <td>Ngày/Tháng</td>
                     <td>Tên</td>
-                    <td>Số tiền(đ)</td>
+                    <td>Số tiền</td>
                     <td>Ghi chú</td>
+                    <td>Nhóm</td>
                     <td>Loại chi tiêu</td>
-
                 </tr>
+                <%int stt=1;%>
                 <c:forEach items="${requestScope.lists}" var="l">
                     <tr>
-                        <td>${l.cid}</td>
-                        <td><fmt:formatDate pattern="dd-MM-yyyy" value="${l.cdate}" /></td>
+                        <td><%=stt++%></td>
+                        <td><fmt:formatDate pattern="dd-MM-yyyy" value="${l.cdate}"/></td>
                         <td>${l.cname}</td>
-                        <td>${l.cprice}</td>
+                        <td><fmt:formatNumber value="${l.cprice}" type="currency"/></td>
                         <td>${l.cnote}</td>
+                        <td>${l.group.cgroupname}</td>
                         <td>${l.type.ctypename}</td>
                         <td><a href="chinhsua?id=${l.cid}">Chỉnh sửa</a>
                             <a href="#" onclick="deleteRecord(${l.cid});" >Xóa</a>

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class DeleteDBContext extends DBContext{
     public void DeleteRecord(int id) {
-        String sql = "DElETE [BaoCaoThang]\n"              
+        String sql = "DElETE [BaoCao]\n"              
                 + " WHERE [cid] = ?";
         PreparedStatement ps = null;        
         try {

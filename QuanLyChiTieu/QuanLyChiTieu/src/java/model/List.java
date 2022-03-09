@@ -18,6 +18,15 @@ public class List {
     private int cprice;
     private String cnote;
     private Type type;
+    private Group group;
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 
     public int getCid() {
         return cid;

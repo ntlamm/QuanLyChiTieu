@@ -6,6 +6,7 @@
 package controller;
 
 import dal.CalculateDBContext;
+import dal.GroupDBContext;
 import dal.ReportDBContext;
 import dal.TypeDBContext;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Group;
 import model.List;
 import model.Type;
 
@@ -38,6 +40,7 @@ public class ListReportController extends BaseAuthenticationController {
         TypeDBContext tc = new TypeDBContext();
         ReportDBContext rc = new ReportDBContext();
         CalculateDBContext cc = new CalculateDBContext();
+        GroupDBContext gc = new GroupDBContext();
 
         String raw_typeid = request.getParameter("typeid");
         raw_typeid = (raw_typeid == null || raw_typeid.isEmpty()) ? "-1" : raw_typeid;
@@ -45,12 +48,14 @@ public class ListReportController extends BaseAuthenticationController {
 
         ArrayList<List> lists = rc.getlists(id);
         ArrayList<Type> types = tc.getTypes();
+        ArrayList<Group> groups = gc.getGroups();
         int TotalGet = cc.getMoney(1);
         int TotalPay = cc.getMoney(2);
         int Total = TotalGet - TotalPay;
 
         request.setAttribute("types", types);
         request.setAttribute("lists", lists);
+        request.setAttribute("groups", groups);
         request.setAttribute("typeid", id);
         request.setAttribute("TotalGet", TotalGet);
         request.setAttribute("TotalPay", TotalPay);

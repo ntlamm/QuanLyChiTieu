@@ -21,7 +21,7 @@ public class CalculateDBContext extends DBContext {
     public int getMoney(int id) {
         int money = 0;
         try {
-            String sql = "select sum(cprice) as Total from BaoCaoThang a join Loai b on a.ctypeid=b.ctypeid where b.ctypeid=? ";
+            String sql = "select sum(cprice) as Total from BaoCao a join Loai b on a.ctypeid=b.ctypeid where b.ctypeid=? ";
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
