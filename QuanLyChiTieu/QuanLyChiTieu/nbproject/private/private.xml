@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/model/Group.java</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/dal/TypeDBContext.java</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/model/List.java</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/ListReportController.java</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/EditController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/web/view/report.jsp</file>
+            <file>file:/D:/Java/QuanLyChiTieu/web/css/report.css</file>
+            <file>file:/D:/Java/QuanLyChiTieu/web/view/login.jsp</file>
+            <file>file:/D:/Java/QuanLyChiTieu/web/css/login.css</file>
         </group>
     </open-files>
 </project-private>

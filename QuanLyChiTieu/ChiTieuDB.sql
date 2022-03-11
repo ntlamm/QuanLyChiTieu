@@ -1,7 +1,7 @@
 USE [master]
 GO
 
-/****** Object:  Database [ChiTieu]    Script Date: 3/3/2022 4:18:42 PM ******/
+/****** Object:  Database [ChiTieu]    Script Date: 3/11/2022 12:43:23 PM ******/
 CREATE DATABASE [ChiTieu]
  CONTAINMENT = NONE
  ON  PRIMARY 
