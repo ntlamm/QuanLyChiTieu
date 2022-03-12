@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function login(Object){
-    if(Object==null){
-        window.alert("Sai tài khoản hoặc mật khẩu!");
-        window.location.href="login";
-    }else{
-        window.alert("Đăng nhập thành công!");       
-    }
+function login(){
+    var user = document.getElementsByTagName("input")[0].value;
+    var pass = document.getElementsByTagName("input")[1].value;
+    if(user==''||pass==''){   
+        alert("Tài khoản hoặc mật khẩu đang trống!");
+        return false;
+    }  
 }
 

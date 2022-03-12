@@ -44,7 +44,7 @@ public class InsertController extends BaseAuthenticationController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertController</title>");            
+            out.println("<title>Servlet InsertController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet InsertController at " + request.getContextPath() + "</h1>");
@@ -67,10 +67,10 @@ public class InsertController extends BaseAuthenticationController {
             throws ServletException, IOException {
         TypeDBContext tc = new TypeDBContext();
         GroupDBContext gc = new GroupDBContext();
-        
+
         ArrayList<Group> groups = gc.getGroups();
         ArrayList<Type> types = tc.getTypes();
-        
+
         request.setAttribute("types", types);
         request.setAttribute("groups", groups);
         request.getRequestDispatcher("view/insert.jsp").forward(request, response);
@@ -89,22 +89,23 @@ public class InsertController extends BaseAuthenticationController {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
+
         ReportDBContext rc = new ReportDBContext();
-        
+
         ArrayList<List> lists = rc.getlists();
-        int id=0;
-        if(lists.isEmpty()){
-            id =1;
-        }else{
-            id+=1;
-        }       
+        int id = 0;
+        if (lists.isEmpty()) {
+            id = 1;
+        } else {
+            id = lists.get(lists.size() - 1).getCid() + 1;
+        }
         String raw_cdate = request.getParameter("cdate");
         String raw_cname = request.getParameter("cname");
-        String raw_cprice = request.getParameter("cprice");       
+        String raw_cprice = request.getParameter("cprice");
         String raw_cnote = request.getParameter("cnote");
         String raw_ctypeid = request.getParameter("ctypeid");
         String raw_cgroupid = request.getParameter("cgroupid");
-               
+
         int cgroupid = Integer.parseInt(raw_cgroupid);
         int ctypeid = Integer.parseInt(raw_ctypeid);
         int cprice = Integer.parseInt(raw_cprice);
@@ -112,7 +113,7 @@ public class InsertController extends BaseAuthenticationController {
         String cnote = raw_cnote;
         Date cdate = Date.valueOf(raw_cdate);
 
-        Type t= new Type();
+        Type t = new Type();
         t.setCtypeid(ctypeid);
         Group g = new Group();
         g.setCgroupid(cgroupid);
@@ -124,7 +125,7 @@ public class InsertController extends BaseAuthenticationController {
         l.setCprice(cprice);
         l.setType(t);
         l.setGroup(g);
-        
+
         InsertDBContext ic = new InsertDBContext();
         ic.insertRecord(l);
         response.sendRedirect("baocao");

@@ -20,6 +20,10 @@
         <servlet-name>DeleteController</servlet-name>
         <servlet-class>controller.DeleteController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PlanController</servlet-name>
+        <servlet-class>controller.PlanController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
         <url-pattern>/dangnhap</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>DeleteController</servlet-name>
         <url-pattern>/xoa</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanController</servlet-name>
+        <url-pattern>/kehoach</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

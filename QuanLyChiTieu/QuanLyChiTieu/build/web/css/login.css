@@ -7,16 +7,12 @@ and open the template in the editor.
     Created on : Mar 10, 2022, 6:37:26 PM
     Author     : Admin
 */
-body{
-    background-color:antiquewhite; 
+.font{
+    background-color:whitesmoke; 
 }
-h2{   
-    text-align: center;
-    padding-top: 80x;
-    font-weight: 200;  
-    padding-bottom: 15px;
-}
+
 .login{
+    padding-top: 100px;
     text-align: center;    
 }
 input{   
@@ -43,10 +39,6 @@ h5{
     color: white;
     background-color: #2d96f7;
 }
-.font{
-    background-color: whitesmoke;
-    padding:250px;
-}
-span{
-    padding:-10px ;
-}
+
+
+

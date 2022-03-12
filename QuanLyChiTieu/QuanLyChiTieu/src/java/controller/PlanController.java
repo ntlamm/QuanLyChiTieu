@@ -5,20 +5,18 @@
  */
 package controller;
 
-import dal.AccountDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Account;
 
 /**
  *
  * @author Admin
  */
-public class AuthenticationController extends HttpServlet {
+public class PlanController extends BaseAuthenticationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class AuthenticationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AuthenticationController</title>");
+            out.println("<title>Servlet PlanController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AuthenticationController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PlanController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,9 +54,9 @@ public class AuthenticationController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/login.jsp").forward(request, response);
+        request.getRequestDispatcher("view/plan.jsp").forward(request, response);
     }
 
     /**
@@ -70,20 +68,9 @@ public class AuthenticationController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        AccountDBContext ac = new AccountDBContext();
-        Account acc = ac.getAccount(user, pass);
-        if (acc != null) {
-            request.getSession().setAttribute("account", acc);
-            response.sendRedirect("baocao");
-        } else {
-            String tbao = "Đăng nhập thất bại!";
-            request.setAttribute("tbao", tbao);
-            request.getRequestDispatcher("view/login.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
