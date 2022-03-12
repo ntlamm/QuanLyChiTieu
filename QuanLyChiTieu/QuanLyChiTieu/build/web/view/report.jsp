@@ -17,7 +17,7 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
@@ -39,8 +39,14 @@
                         Chào mừng,${sessionScope.account.username}</h6><br/>
                 </div>
             </c:if>
-            <a href="baocao"><h6>Trang chính</h6></a><br/>
-            <a href="kehoach"><h6>Lập kế hoạch</h6></a><br/>
+            <div id="bar">
+            <a href="baocao"><i class="bi bi-house-door-fill" style="color:black; font-size: 3rem"></i></a><br/>
+            <h5>Trang chủ</h5><br/>
+            </div>
+            <div id="bar">
+            <a href="kehoach"><i class="bi bi-clipboard" style="color:black; font-size: 3rem"></i></a><br/>
+            <h5>Lập kế hoạch</h5><br/>
+            </div>          
             <div id="bar">
             <a href="muctieu"><i class="bi bi-bullseye"style="color:black; font-size: 3rem"></i></a><br/>
             <h5>Lập mục tiêu</h5><br/>
@@ -49,9 +55,9 @@
         <div class="col-sm-10">
             <form id="searchform" action="baocao" method="GET">
                 <i class="bi bi-wallet2" style="color: brown"></i> Số dư: <fmt:formatNumber value="${requestScope.Total}" type="currency"/><br/>
-                Khoản thu: <fmt:formatNumber value="${requestScope.TotalGet}" type="currency"/><br/>
+                <div id="cashget"><i class="bi bi-cash" style="color: green"></i> Khoản thu: +<fmt:formatNumber value="${requestScope.TotalGet}" type="currency"/></div>
                 -<br/>
-                Khoản chi: <fmt:formatNumber value="${requestScope.TotalPay}" type="currency"/><br/>
+                <div id="cashpay"><i class="bi bi-cash" style="color: red"></i> Khoản chi: -<fmt:formatNumber value="${requestScope.TotalPay}" type="currency"/></div>
                 ___________________________________<br/>
                 <fmt:formatNumber value="${requestScope.Total}" type="currency"/><br/>
                 <div id="kieu">
@@ -88,7 +94,7 @@
                                 <td>${l.group.cgroupname}</td>
                                 <td>${l.type.ctypename}</td>
                                 <td><a href="chinhsua?id=${l.cid}">
-                                        <i class="bi bi-wrench" style="color: greenyellow; font-size: 1.5rem"></i></a>
+                                        <i class="bi bi-wrench" style="color: green; font-size: 1.5rem"></i></a>
                                     <a href="#" onclick="deleteRecord(${l.cid});" >
                                         <i class="bi bi-trash3-fill" style="color: red;font-size: 1.5rem"></i></a>
                                 </td>
