@@ -73,9 +73,11 @@ public class InsertDBContext extends DBContext {
                 + "           ,[cgroupid]\n"
                 + "           ,[pdateF]\n"
                 + "           ,[pdateT]\n"
-                + "           ,[pprice])\n"
+                + "           ,[pprice]\n"
+                + "           ,[paypprice])\n"
                 + "     VALUES\n"
                 + "           (?\n"
+                + "           ,?\n"
                 + "           ,?\n"
                 + "           ,?\n"
                 + "           ,?\n"
@@ -87,7 +89,8 @@ public class InsertDBContext extends DBContext {
             ps.setInt(2, l.getGroup().getCgroupid());
             ps.setDate(3, l.getFrom());
             ps.setDate(4, l.getTo());
-            ps.setInt(5, l.getPprice());            
+            ps.setInt(5, l.getPprice());
+            ps.setInt(6, l.getPaypprice());
 
             ps.executeUpdate();
         } catch (SQLException ex) {

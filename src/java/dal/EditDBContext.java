@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.List;
+import model.Plan;
 
 /**
  *
@@ -36,6 +37,43 @@ public class EditDBContext extends DBContext {
             ps.setInt(5, l.getGroup().getCgroupid());
             ps.setInt(6, l.getType().getCtypeid());
             ps.setInt(7, l.getCid());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void EditPlan(Plan l) {
+        String sql = "UPDATE [Plan]\n"
+                + "   SET [pdateF] = ?\n"
+                + "      ,[pdateT] = ?\n"
+                + "      ,[pprice] = ?\n"
+                + "      ,[paypprice] = ?\n"
+                + " WHERE [pid] = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = connect.prepareStatement(sql);
+            ps.setDate(1, l.getFrom());
+            ps.setDate(2, l.getTo());
+            ps.setInt(3, l.getPprice());
+            ps.setInt(4, l.getPaypprice());
+            ps.setInt(5, l.getPid());
+            
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);

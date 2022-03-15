@@ -5,11 +5,10 @@
  */
 package controller;
 
-import dal.EditDBContext;
+import dal.CalculateDBContext;
 import dal.GroupDBContext;
 import dal.InsertDBContext;
-import dal.ReportDBContext;
-import dal.TypeDBContext;
+import dal.PlanDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -19,14 +18,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Group;
-import model.List;
-import model.Type;
+import model.Plan;
 
 /**
  *
  * @author Admin
  */
-public class InsertController extends BaseAuthenticationController {
+public class AddPlanController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +43,10 @@ public class InsertController extends BaseAuthenticationController {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InsertController</title>");
+            out.println("<title>Servlet AddPlan</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InsertController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddPlan at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,17 +62,25 @@ public class InsertController extends BaseAuthenticationController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TypeDBContext tc = new TypeDBContext();
         GroupDBContext gc = new GroupDBContext();
+        PlanDBContext pc = new PlanDBContext();
 
+        int id = Integer.parseInt(request.getParameter("id"));
         ArrayList<Group> groups = gc.getGroups();
-        ArrayList<Type> types = tc.getTypes();
+        ArrayList<Plan> plans = pc.getPlansByGid(id);
 
-        request.setAttribute("types", types);
-        request.setAttribute("groups", groups);
-        request.getRequestDispatcher("view/insert.jsp").forward(request, response);
+        if (plans.isEmpty()) {
+            request.setAttribute("id", id);
+            request.setAttribute("groups", groups);
+            request.getRequestDispatcher("view/addplan.jsp").forward(request, response);
+        } else {
+            String tbao = "Danh mục liên quan đã tồn tại!";
+            request.setAttribute("tbao", tbao);
+            request.getRequestDispatcher("kehoach").forward(request, response);
+        }
+
     }
 
     /**
@@ -86,50 +92,50 @@ public class InsertController extends BaseAuthenticationController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
 
-        ReportDBContext rc = new ReportDBContext();
+        String raw_from = request.getParameter("from");
+        String raw_to = request.getParameter("to");
+        String raw_cgroupid = request.getParameter("cgroupid");
+        String raw_pprice = request.getParameter("pprice");
 
-        ArrayList<List> lists = rc.getlists();
+        Date dateF = Date.valueOf(raw_from);
+        Date dateT = Date.valueOf(raw_to);
+        int cgroupid = Integer.parseInt(raw_cgroupid);
+        int pprice = Integer.parseInt(raw_pprice);
+        CalculateDBContext cc = new CalculateDBContext();
+        int moneyInRange = cc.getMoneyInRange(dateF, dateT, cgroupid);
+        
+        PlanDBContext pc = new PlanDBContext();
+        ArrayList<Plan> plans = pc.getPlans();
         int id = 0;
-        if (lists.isEmpty()) {
+
+        if (plans.isEmpty()) {
             id = 1;
         } else {
-            id = lists.get(lists.size() - 1).getCid() + 1;
+            id = plans.get(plans.size() - 1).getPid() + 1;
         }
-        String raw_cdate = request.getParameter("cdate");
-        String raw_cname = request.getParameter("cname");
-        String raw_cprice = request.getParameter("cprice");
-        String raw_cnote = request.getParameter("cnote");
-        String raw_ctypeid = request.getParameter("ctypeid");
-        String raw_cgroupid = request.getParameter("cgroupid");
 
-        int cgroupid = Integer.parseInt(raw_cgroupid);
-        int ctypeid = Integer.parseInt(raw_ctypeid);
-        int cprice = Integer.parseInt(raw_cprice);
-        String cname = raw_cname;
-        String cnote = raw_cnote;
-        Date cdate = Date.valueOf(raw_cdate);
+        
 
-        Type t = new Type();
-        t.setCtypeid(ctypeid);
         Group g = new Group();
         g.setCgroupid(cgroupid);
-        List l = new List();
-        l.setCid(id);
-        l.setCdate(cdate);
-        l.setCname(cname);
-        l.setCnote(cnote);
-        l.setCprice(cprice);
-        l.setType(t);
-        l.setGroup(g);
+
+        Plan p = new Plan();
+        p.setFrom(dateF);
+        p.setTo(dateT);
+        p.setPid(id);
+        p.setPprice(pprice);
+        p.setGroup(g);
+        p.setPaypprice(moneyInRange);
 
         InsertDBContext ic = new InsertDBContext();
-        ic.insertRecord(l);
-        response.sendRedirect("baocao");
+        ic.InsertPlan(p);
+        response.sendRedirect("kehoach");
+
     }
 
     /**

@@ -42,4 +42,32 @@ public class DeleteDBContext extends DBContext{
             }
         }
     }
+    
+    public void DeletePlan(int id) {
+        String sql = "DElETE [Plan]\n"              
+                + " WHERE [pid] = ?";
+        PreparedStatement ps = null;        
+        try {
+            ps = connect.prepareStatement(sql);          
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

@@ -17,7 +17,25 @@ public class Plan {
     private Date from;
     private Date to; 
     private int pprice;
+    private int paypprice;
+    private int dayleft;
 
+    public int getDayleft() {
+        return dayleft;
+    }
+
+    public void setDayleft(int dayleft) {
+        this.dayleft = dayleft;
+    }
+
+    public int getPaypprice() {
+        return paypprice;
+    }
+
+    public void setPaypprice(int paypprice) {
+        this.paypprice = paypprice;
+    }
+    
     public int getPid() {
         return pid;
     }

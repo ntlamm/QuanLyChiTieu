@@ -10,25 +10,23 @@ import dal.EditDBContext;
 import dal.GroupDBContext;
 import dal.PlanDBContext;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Group;
+import model.List;
 import model.Plan;
+import model.Type;
 
 /**
  *
  * @author Admin
  */
-public class PlanController extends HttpServlet {
+public class EditPlanController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,30 +38,20 @@ public class PlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        GroupDBContext gc = new GroupDBContext();
-        PlanDBContext pc = new PlanDBContext();
-        CalculateDBContext cc = new CalculateDBContext();  
-        EditDBContext ec = new EditDBContext();
-        
-        ArrayList<Group> groups = gc.getGroups();      
-        ArrayList<Plan> plans = pc.getPlans();
-        int budget = cc.getPricePlan();
-        
-        
-        for (Plan plan : plans) {         
-            plan.setPaypprice( cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
-            plan.setDayleft(cc.getDate(plan.getTo()));
-            ec.EditPlan(plan);           
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet EditPlan</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet EditPlan at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        int TotalPay = cc.getMoney(2);             
-        
-        request.setAttribute("TotalPay", TotalPay);
-        request.setAttribute("budget", budget);
-        request.setAttribute("groups", groups);
-        request.setAttribute("plans", plans);
-        request.getRequestDispatcher("view/plan.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,7 +66,16 @@ public class PlanController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        GroupDBContext gc = new GroupDBContext();
+        PlanDBContext pc = new PlanDBContext();
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        ArrayList<Group> groups = gc.getGroups();
+        Plan plan = pc.getPlanByPid(id);
+
+        request.setAttribute("groups", groups);
+        request.setAttribute("plan", plan);
+        request.getRequestDispatcher("view/editplan.jsp").forward(request, response);
     }
 
     /**
@@ -92,7 +89,33 @@ public class PlanController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+
+        String raw_pid = request.getParameter("pid");
+        String raw_cgroupid = request.getParameter("cgroupid");
+        String raw_from = request.getParameter("from");
+        String raw_to = request.getParameter("to");
+        String raw_pprice = request.getParameter("pprice");
+        
+        int cgroupid = Integer.parseInt(raw_cgroupid);
+        int pid = Integer.parseInt(raw_pid);
+        int pprice = Integer.parseInt(raw_pprice);
+        Date from = Date.valueOf(raw_from);
+        Date to = Date.valueOf(raw_to);
+        CalculateDBContext cc = new CalculateDBContext();
+        int moneyInRange = cc.getMoneyInRange(from, to, cgroupid);
+        
+        Plan l = new Plan();
+        l.setPid(pid);
+        l.setFrom(from);
+        l.setTo(to);
+        l.setPprice(pprice);
+        l.setPaypprice(moneyInRange);
+
+        EditDBContext ec = new EditDBContext();
+        ec.EditPlan(l);
+        response.sendRedirect("kehoach");
     }
 
     /**

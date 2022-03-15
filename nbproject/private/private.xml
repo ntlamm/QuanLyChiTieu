@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/dal/InsertDBContext.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/DeletePlanController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/EditPlanController.java</file>
             <file>file:/D:/Java/QuanLyChiTieu/web/view/plan.jsp</file>
             <file>file:/D:/Java/QuanLyChiTieu/web/view/report.jsp</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/PlanController.java</file>
             <file>file:/D:/Java/QuanLyChiTieu/src/java/dal/CalculateDBContext.java</file>
-            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/InsertController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/PlanController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/DeleteController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/controller/AddPlanController.java</file>
+            <file>file:/D:/Java/QuanLyChiTieu/src/java/dal/PlanDBContext.java</file>
         </group>
     </open-files>
 </project-private>

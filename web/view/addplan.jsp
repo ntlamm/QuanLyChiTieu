@@ -17,9 +17,11 @@
         <form method="POST" action="themkehoach">
             <c:forEach items="${requestScope.groups}" var="g">
                 <c:if test="${g.cgroupid==requestScope.id}">
-                    Nhóm:${g.cgroupname}<input type="hidden" name="cgroupid" value="${requestScope.id}"/><br/> 
+                    Nhóm:${g.cgroupname}<input type="hidden" name="cgroupid" value="${requestScope.id}"/><br/>
+                    Mô tả:${g.cgroupnote}<input type="hidden"/><br/> 
                 </c:if>           
             </c:forEach>
+                    
             Từ(ngày/tháng):<input type="date" name="from"/><br/>  
             Đến(ngày/tháng):<input type="date" name="to"/><br/>            
             Ngân sách bỏ ra(đ):<input type="text" name="pprice"/><br/>                     

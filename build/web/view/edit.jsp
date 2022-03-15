@@ -20,7 +20,7 @@
     </head>
     <body>       
         <form method="POST" action="chinhsua">
-            Id:${requestScope.Rc.cid}<input type="hidden" name="cid" value="${requestScope.Rc.cid}"/><br/>
+            <input type="hidden" name="cid" value="${requestScope.Rc.cid}"/><br/>
             Ngày/Tháng:<input type="date" name="cdate" value="${requestScope.Rc.cdate}"/><br/>
             Tên:<input type="text" name="cname" value="${requestScope.Rc.cname}"/><br/>
             Số tiền:<input type="text" name="cprice" value="${requestScope.Rc.cprice}"/><br/>
@@ -38,6 +38,6 @@
                 </c:forEach>
             </select><br/>
             <input type="submit" value="Lưu"/>
-        </form>
+        </form>      
     </body>
 </html>

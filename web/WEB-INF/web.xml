@@ -21,20 +21,20 @@
         <servlet-class>controller.DeleteController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PlanController</servlet-name>
-        <servlet-class>controller.PlanController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AddPlan</servlet-name>
-        <servlet-class>controller.AddPlan</servlet-class>
+        <servlet-class>controller.AddPlanController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditPlan</servlet-name>
-        <servlet-class>controller.EditPlan</servlet-class>
+        <servlet-class>controller.EditPlanController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeletePlan</servlet-name>
-        <servlet-class>controller.DeletePlan</servlet-class>
+        <servlet-class>controller.DeletePlanController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlanController</servlet-name>
+        <servlet-class>controller.PlanController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
@@ -57,10 +57,6 @@
         <url-pattern>/xoa</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PlanController</servlet-name>
-        <url-pattern>/kehoach</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AddPlan</servlet-name>
         <url-pattern>/themkehoach</url-pattern>
     </servlet-mapping>
@@ -71,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>DeletePlan</servlet-name>
         <url-pattern>/xoakehoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlanController</servlet-name>
+        <url-pattern>/kehoach</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
