@@ -20,6 +20,15 @@ public class Plan {
     private int paypprice;
     private int dayleft;
     private int daypass;
+    private int stt;
+
+    public int getStt() {
+        return stt;
+    }
+
+    public void setStt(int stt) {
+        this.stt = stt;
+    }
 
     public int getDaypass() {
         return daypass;

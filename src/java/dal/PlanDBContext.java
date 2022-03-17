@@ -18,17 +18,18 @@ import model.Plan;
  *
  * @author Admin
  */
-public class PlanDBContext extends DBContext{
+public class PlanDBContext extends DBContext {
 
     public ArrayList<Plan> getPlans() {
         ArrayList<Plan> plans = new ArrayList<>();
         try {
-            String sql = "select a.pid,b.cgroupid,b.cgroupname,a.pdateF,a.pdateT,b.cgroupnote,a.pprice,a.paypprice \n"
-                    + "from [Plan] a join [Group] b on b.cgroupid=a.cgroupid";
+            String sql = "select * from(select a.pid,b.cgroupid,b.cgroupname,a.pdateF,a.pdateT,b.cgroupnote,a.pprice,a.paypprice,\n"
+                    + "ROW_NUMBER() OVER (ORDER BY a.pid ASC) as stt from [Plan] a join [Group] b on b.cgroupid=a.cgroupid) tb";
             PreparedStatement stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Plan d = new Plan();
+                d.setStt(rs.getInt("stt"));
                 d.setPid(rs.getInt("pid"));
                 d.setFrom(rs.getDate("pdateF"));
                 d.setTo(rs.getDate("pdateT"));
@@ -46,7 +47,7 @@ public class PlanDBContext extends DBContext{
         }
         return plans;
     }
-    
+
     public ArrayList<Plan> getPlansByGid(int id) {
         ArrayList<Plan> plans = new ArrayList<>();
         try {
@@ -60,7 +61,7 @@ public class PlanDBContext extends DBContext{
                 d.setPid(rs.getInt("pid"));
                 d.setFrom(rs.getDate("pdateF"));
                 d.setTo(rs.getDate("pdateT"));
-                d.setPprice(rs.getInt("pprice"));               
+                d.setPprice(rs.getInt("pprice"));
                 Group g = new Group();
                 g.setCgroupid(rs.getInt("cgroupid"));
                 g.setCgroupname(rs.getString("cgroupname"));
@@ -73,8 +74,8 @@ public class PlanDBContext extends DBContext{
         }
         return plans;
     }
-    
-    public Plan getPlanByPid(int id) {       
+
+    public Plan getPlanByPid(int id) {
         try {
             String sql = "select a.pid,b.cgroupid,b.cgroupname,a.pdateF,a.pdateT,b.cgroupnote,a.pprice \n"
                     + "from [Plan] a join [Group] b on b.cgroupid=a.cgroupid where a.pid=?";
@@ -86,7 +87,7 @@ public class PlanDBContext extends DBContext{
                 d.setPid(rs.getInt("pid"));
                 d.setFrom(rs.getDate("pdateF"));
                 d.setTo(rs.getDate("pdateT"));
-                d.setPprice(rs.getInt("pprice"));               
+                d.setPprice(rs.getInt("pprice"));
                 Group g = new Group();
                 g.setCgroupid(rs.getInt("cgroupid"));
                 g.setCgroupname(rs.getString("cgroupname"));

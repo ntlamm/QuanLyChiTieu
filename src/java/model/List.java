@@ -19,6 +19,15 @@ public class List {
     private String cnote;
     private Type type;
     private Group group;
+    private int stt;
+
+    public int getStt() {
+        return stt;
+    }
+
+    public void setStt(int stt) {
+        this.stt = stt;
+    }    
 
     public Group getGroup() {
         return group;

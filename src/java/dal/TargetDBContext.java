@@ -17,20 +17,23 @@ import model.Target;
  *
  * @author Admin
  */
-public class TargetDBContext extends DBContext{
+public class TargetDBContext extends DBContext {
+
     public ArrayList<Target> getTargets() {
         ArrayList<Target> targets = new ArrayList<>();
         try {
-            String sql = "select tid,tname,[from],[to],tprice from target";
+            String sql = "select * from (select tid,tname,[from],[to],tprice, "
+                    + "ROW_NUMBER() OVER (ORDER BY tid ASC) as stt from target) tb";
             PreparedStatement stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Target d = new Target();
+                d.setStt(rs.getInt("stt"));
                 d.setTid(rs.getInt("tid"));
                 d.setTname(rs.getString("tname"));
                 d.setTo(rs.getDate("to"));
                 d.setFrom(rs.getDate("from"));
-                d.setTprice(rs.getInt("tprice"));               
+                d.setTprice(rs.getInt("tprice"));
                 targets.add(d);
             }
         } catch (SQLException ex) {
@@ -38,7 +41,7 @@ public class TargetDBContext extends DBContext{
         }
         return targets;
     }
-    
+
     public Target getTarget(int id) {
         try {
             String sql = "select tid,tname,[from],[to],tprice from target where tid=?";
@@ -51,7 +54,7 @@ public class TargetDBContext extends DBContext{
                 d.setTname(rs.getString("tname"));
                 d.setTo(rs.getDate("to"));
                 d.setFrom(rs.getDate("from"));
-                d.setTprice(rs.getInt("tprice"));               
+                d.setTprice(rs.getInt("tprice"));
                 return d;
             }
         } catch (SQLException ex) {

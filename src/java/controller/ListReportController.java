@@ -46,13 +46,24 @@ public class ListReportController extends HttpServlet {
         raw_typeid = (raw_typeid == null || raw_typeid.isEmpty()) ? "-1" : raw_typeid;
         int id = Integer.parseInt(raw_typeid);
 
-        ArrayList<List> lists = rc.getlists(id);
+        int pagesize=10;
+        String raw_page=request.getParameter("page");
+        if(raw_page==null||raw_page.isEmpty()){
+            raw_page="1";
+        }
+        int pageindex=Integer.parseInt(raw_page);
+        int totalrecords = rc.countAll();
+        int totalpage=(totalrecords%pagesize==0)?totalrecords/pagesize:(totalrecords/pagesize)+1;
+        
+        ArrayList<List> lists = rc.getlists(id,pageindex,pagesize);
         ArrayList<Type> types = tc.getTypes();
         ArrayList<Group> groups = gc.getGroups();
         int TotalGet = cc.getMoney(1);
         int TotalPay = cc.getMoney(2);
         int Total = TotalGet - TotalPay;
-
+        
+        request.setAttribute("totalpage", totalpage);
+        request.setAttribute("pageindex", pageindex);
         request.setAttribute("types", types);
         request.setAttribute("lists", lists);
         request.setAttribute("groups", groups);

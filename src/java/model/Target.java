@@ -19,6 +19,15 @@ public class Target {
     private int dayleft;
     private int tprice;
     private int pricesave;
+    private int stt;
+
+    public int getStt() {
+        return stt;
+    }
+
+    public void setStt(int stt) {
+        this.stt = stt;
+    }
 
     public int getDayleft() {
         return dayleft;
