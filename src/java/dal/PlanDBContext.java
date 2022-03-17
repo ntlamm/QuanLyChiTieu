@@ -42,7 +42,7 @@ public class PlanDBContext extends DBContext{
                 plans.add(d);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ReportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return plans;
     }
@@ -69,7 +69,7 @@ public class PlanDBContext extends DBContext{
                 plans.add(d);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ReportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return plans;
     }
@@ -95,7 +95,7 @@ public class PlanDBContext extends DBContext{
                 return d;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ReportDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlanDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

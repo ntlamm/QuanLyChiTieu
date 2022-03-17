@@ -6,29 +6,30 @@
 package controller;
 
 import dal.CalculateDBContext;
-import dal.EditDBContext;
 import dal.GroupDBContext;
+import dal.InsertDBContext;
 import dal.PlanDBContext;
+import dal.ReportDBContext;
+import dal.TargetDBContext;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Group;
+import model.List;
 import model.Plan;
+import model.Target;
+import model.Type;
 
 /**
  *
  * @author Admin
  */
-public class PlanController extends HttpServlet {
+public class InsertTargetController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,31 +41,20 @@ public class PlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        GroupDBContext gc = new GroupDBContext();
-        PlanDBContext pc = new PlanDBContext();
-        CalculateDBContext cc = new CalculateDBContext();  
-        EditDBContext ec = new EditDBContext();
-        
-        ArrayList<Group> groups = gc.getGroups();      
-        ArrayList<Plan> plans = pc.getPlans();
-        int budget = cc.getPricePlan();
-        
-        
-        for (Plan plan : plans) {         
-            plan.setPaypprice( cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
-            plan.setDayleft(cc.getDate(plan.getTo()));
-            plan.setDaypass(cc.getDatePass(plan.getFrom()));
-            ec.EditPlan(plan);           
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet InsertTargetController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet InsertTargetController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        int TotalPay = cc.getPricePay();             
-        
-        request.setAttribute("TotalPay", TotalPay);
-        request.setAttribute("budget", budget);
-        request.setAttribute("groups", groups);
-        request.setAttribute("plans", plans);
-        request.getRequestDispatcher("view/plan.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -79,7 +69,7 @@ public class PlanController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("view/inserttarget.jsp").forward(request, response);
     }
 
     /**
@@ -93,7 +83,38 @@ public class PlanController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+
+        String raw_tname = request.getParameter("tname");
+        String raw_from = request.getParameter("from");
+        String raw_to = request.getParameter("to");
+        String raw_tprice = request.getParameter("tprice");
+
+        int tprice = Integer.parseInt(raw_tprice);
+        Date from = Date.valueOf(raw_from);
+        Date to = Date.valueOf(raw_to);
+        String tname = raw_tname;
+
+        TargetDBContext  pc = new TargetDBContext();
+        ArrayList<Target> targets = pc.getTargets();
+        int id = 0;
+        if (targets.isEmpty()) {
+            id = 1;
+        } else {
+            id = targets.get(targets.size() - 1).getTid()+ 1;
+        }
+
+        Target l = new Target();
+        l.setTid(id);
+        l.setFrom(from);
+        l.setTo(to);
+        l.setTprice(tprice);
+        l.setTname(tname);
+
+        InsertDBContext ic = new InsertDBContext();
+        ic.InsertTarget(l);
+        response.sendRedirect("muctieu");
     }
 
     /**

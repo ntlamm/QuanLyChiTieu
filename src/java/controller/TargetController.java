@@ -9,26 +9,23 @@ import dal.CalculateDBContext;
 import dal.EditDBContext;
 import dal.GroupDBContext;
 import dal.PlanDBContext;
+import dal.TargetDBContext;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Group;
 import model.Plan;
+import model.Target;
 
 /**
  *
  * @author Admin
  */
-public class PlanController extends HttpServlet {
+public class TargetController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,31 +37,22 @@ public class PlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        GroupDBContext gc = new GroupDBContext();
-        PlanDBContext pc = new PlanDBContext();
-        CalculateDBContext cc = new CalculateDBContext();  
+            throws ServletException, IOException {
+        TargetDBContext pc = new TargetDBContext();
+        CalculateDBContext cc = new CalculateDBContext();
         EditDBContext ec = new EditDBContext();
-        
-        ArrayList<Group> groups = gc.getGroups();      
-        ArrayList<Plan> plans = pc.getPlans();
-        int budget = cc.getPricePlan();
-        
-        
-        for (Plan plan : plans) {         
-            plan.setPaypprice( cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
-            plan.setDayleft(cc.getDate(plan.getTo()));
-            plan.setDaypass(cc.getDatePass(plan.getFrom()));
-            ec.EditPlan(plan);           
+
+        ArrayList<Target> targets = pc.getTargets();
+        for (Target target : targets) {
+            int price = cc.getPriceInRange(target.getFrom(), target.getTo(), 1) - cc.getPriceInRange(target.getFrom(), target.getTo(), 2);
+            if (price <= 0) {
+                price = 0;
+            }
+            target.setPricesave(price);
+            target.setDayleft(cc.getDate(target.getTo()));
         }
-        
-        int TotalPay = cc.getPricePay();             
-        
-        request.setAttribute("TotalPay", TotalPay);
-        request.setAttribute("budget", budget);
-        request.setAttribute("groups", groups);
-        request.setAttribute("plans", plans);
-        request.getRequestDispatcher("view/plan.jsp").forward(request, response);
+        request.setAttribute("targets", targets);
+        request.getRequestDispatcher("view/target.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -14,13 +14,14 @@ import java.util.logging.Logger;
  *
  * @author Admin
  */
-public class DeleteDBContext extends DBContext{
+public class DeleteDBContext extends DBContext {
+
     public void DeleteRecord(int id) {
-        String sql = "DElETE [BaoCao]\n"              
+        String sql = "DElETE [BaoCao]\n"
                 + " WHERE [cid] = ?";
-        PreparedStatement ps = null;        
+        PreparedStatement ps = null;
         try {
-            ps = connect.prepareStatement(sql);          
+            ps = connect.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -42,13 +43,41 @@ public class DeleteDBContext extends DBContext{
             }
         }
     }
-    
+
     public void DeletePlan(int id) {
-        String sql = "DElETE [Plan]\n"              
+        String sql = "DElETE [Plan]\n"
                 + " WHERE [pid] = ?";
-        PreparedStatement ps = null;        
+        PreparedStatement ps = null;
         try {
-            ps = connect.prepareStatement(sql);          
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void DeleteTarget(int id) {
+        String sql = "DElETE [Target]\n"
+                + " WHERE [tid] = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = connect.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException ex) {

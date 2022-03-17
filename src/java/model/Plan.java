@@ -19,6 +19,15 @@ public class Plan {
     private int pprice;
     private int paypprice;
     private int dayleft;
+    private int daypass;
+
+    public int getDaypass() {
+        return daypass;
+    }
+
+    public void setDaypass(int daypass) {
+        this.daypass = daypass;
+    }
 
     public int getDayleft() {
         return dayleft;

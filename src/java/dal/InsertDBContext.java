@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.List;
 import model.Plan;
+import model.Target;
 
 /**
  *
@@ -91,6 +92,49 @@ public class InsertDBContext extends DBContext {
             ps.setDate(4, l.getTo());
             ps.setInt(5, l.getPprice());
             ps.setInt(6, l.getPaypprice());
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void InsertTarget(Target l) {
+        String sql = "INSERT INTO [Target]\n"
+                + "           ([tid]\n"
+                + "           ,[tname]\n"
+                + "           ,[from]\n"
+                + "           ,[to]\n"
+                + "           ,[tprice])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        PreparedStatement ps = null;
+        try {
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, l.getTid());
+            ps.setNString(2, l.getTname());
+            ps.setDate(3, l.getFrom());
+            ps.setDate(4, l.getTo());
+            ps.setInt(5, l.getTprice());
 
             ps.executeUpdate();
         } catch (SQLException ex) {

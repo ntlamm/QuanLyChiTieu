@@ -36,6 +36,22 @@
         <servlet-name>PlanController</servlet-name>
         <servlet-class>controller.PlanController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TargetController</servlet-name>
+        <servlet-class>controller.TargetController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditTargetController</servlet-name>
+        <servlet-class>controller.EditTargetController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertTargetController</servlet-name>
+        <servlet-class>controller.InsertTargetController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteTargetController</servlet-name>
+        <servlet-class>controller.DeleteTargetController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
         <url-pattern>/dangnhap</url-pattern>
@@ -71,6 +87,22 @@
     <servlet-mapping>
         <servlet-name>PlanController</servlet-name>
         <url-pattern>/kehoach</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TargetController</servlet-name>
+        <url-pattern>/muctieu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditTargetController</servlet-name>
+        <url-pattern>/chinhsuamuctieu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertTargetController</servlet-name>
+        <url-pattern>/themmuctieu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteTargetController</servlet-name>
+        <url-pattern>/xoamuctieu</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

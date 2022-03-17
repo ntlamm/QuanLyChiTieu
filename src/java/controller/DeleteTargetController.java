@@ -5,30 +5,27 @@
  */
 package controller;
 
-import dal.CalculateDBContext;
-import dal.EditDBContext;
+import dal.DeleteDBContext;
 import dal.GroupDBContext;
-import dal.PlanDBContext;
+import dal.ReportDBContext;
+import dal.TargetDBContext;
+import dal.TypeDBContext;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Group;
-import model.Plan;
+import model.List;
+import model.Type;
 
 /**
  *
  * @author Admin
  */
-public class PlanController extends HttpServlet {
+public class DeleteTargetController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,31 +37,20 @@ public class PlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        GroupDBContext gc = new GroupDBContext();
-        PlanDBContext pc = new PlanDBContext();
-        CalculateDBContext cc = new CalculateDBContext();  
-        EditDBContext ec = new EditDBContext();
-        
-        ArrayList<Group> groups = gc.getGroups();      
-        ArrayList<Plan> plans = pc.getPlans();
-        int budget = cc.getPricePlan();
-        
-        
-        for (Plan plan : plans) {         
-            plan.setPaypprice( cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
-            plan.setDayleft(cc.getDate(plan.getTo()));
-            plan.setDaypass(cc.getDatePass(plan.getFrom()));
-            ec.EditPlan(plan);           
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DeleteTargetController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DeleteTargetController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        int TotalPay = cc.getPricePay();             
-        
-        request.setAttribute("TotalPay", TotalPay);
-        request.setAttribute("budget", budget);
-        request.setAttribute("groups", groups);
-        request.setAttribute("plans", plans);
-        request.getRequestDispatcher("view/plan.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,8 +64,11 @@ public class PlanController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException {                   
+        int id = Integer.parseInt(request.getParameter("id"));
+        DeleteDBContext dc = new DeleteDBContext();
+        dc.DeleteTarget(id);
+        response.sendRedirect("muctieu");
     }
 
     /**
