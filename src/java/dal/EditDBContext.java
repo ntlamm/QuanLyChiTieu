@@ -62,6 +62,7 @@ public class EditDBContext extends DBContext {
     public void EditPlan(Plan l) {
         String sql = "UPDATE [Plan]\n"
                 + "   SET [pdateF] = ?\n"
+                + "      ,[cgroupid] = ?\n"
                 + "      ,[pdateT] = ?\n"
                 + "      ,[pprice] = ?\n"
                 + "      ,[paypprice] = ?\n"
@@ -70,10 +71,11 @@ public class EditDBContext extends DBContext {
         try {
             ps = connect.prepareStatement(sql);
             ps.setDate(1, l.getFrom());
-            ps.setDate(2, l.getTo());
-            ps.setInt(3, l.getPprice());
-            ps.setInt(4, l.getPaypprice());
-            ps.setInt(5, l.getPid());
+            ps.setInt(2, l.getGroup().getCgroupid());
+            ps.setDate(3, l.getTo());
+            ps.setInt(4, l.getPprice());
+            ps.setInt(5, l.getPaypprice());
+            ps.setInt(6, l.getPid());
 
             ps.executeUpdate();
         } catch (SQLException ex) {

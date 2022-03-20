@@ -40,30 +40,34 @@ public class PlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
         GroupDBContext gc = new GroupDBContext();
         PlanDBContext pc = new PlanDBContext();
-        CalculateDBContext cc = new CalculateDBContext();  
+        CalculateDBContext cc = new CalculateDBContext();
         EditDBContext ec = new EditDBContext();
-        
-        ArrayList<Group> groups = gc.getGroups();      
+
+        ArrayList<Group> groups = gc.getGroups();
         ArrayList<Plan> plans = pc.getPlans();
         int budget = cc.getPricePlan();
-        
-        
-        for (Plan plan : plans) {         
-            plan.setPaypprice( cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
+
+        for (Plan plan : plans) {
+            plan.setPaypprice(cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
+            ec.EditPlan(plan);
+        }
+        ArrayList<Plan> plansUpdate = pc.getPlans();
+        for (Plan plan : plansUpdate) {
             plan.setDayleft(cc.getDate(plan.getTo()));
             plan.setDaypass(cc.getDatePass(plan.getFrom()));
-            ec.EditPlan(plan);           
+            if (plan.getDaypass() > cc.getDateBetween(plan.getFrom(), plan.getTo())) {
+                plan.setDaypass(cc.getDateBetween(plan.getFrom(), plan.getTo()));
+            }
         }
-        
-        int TotalPay = cc.getPricePay();             
-        
+        int TotalPay = cc.getPricePay();
+
         request.setAttribute("TotalPay", TotalPay);
         request.setAttribute("budget", budget);
         request.setAttribute("groups", groups);
-        request.setAttribute("plans", plans);
+        request.setAttribute("plans", plansUpdate);
         request.getRequestDispatcher("view/plan.jsp").forward(request, response);
     }
 

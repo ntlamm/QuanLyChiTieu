@@ -30,8 +30,8 @@ public class Logout extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account account = (Account) request.getSession().getAttribute("account");
-       response.sendRedirect("baocao");
+        request.getSession().setAttribute("account", null);       
+       response.sendRedirect("dangnhap");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

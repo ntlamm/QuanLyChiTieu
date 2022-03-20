@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
 /**
  *
@@ -68,7 +69,9 @@ public abstract class BaseAuthenticationController extends HttpServlet {
         if (isAuthenticated(request)) {
             processGet(request, response);
         } else {
-            response.getWriter().println("Access Denied!");
+            String tbao = "Bạn cần đăng nhập để có thể thao tác!";
+            request.setAttribute("tbao", tbao);
+            request.getRequestDispatcher("dangnhap").forward(request, response);
         }
     }
 
@@ -92,7 +95,9 @@ public abstract class BaseAuthenticationController extends HttpServlet {
         if (isAuthenticated(request)) {
             processPost(request, response);
         } else {
-            response.getWriter().println("Access Denied!");
+            String tbao = "Bạn cần đăng nhập để có thể thao tác!";
+            request.setAttribute("tbao", tbao);
+            request.getRequestDispatcher("dangnhap").forward(request, response);
         }
     }
 

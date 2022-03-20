@@ -75,8 +75,7 @@ public class CalculateDBContext extends DBContext {
             ps.setDate(2, from);
             ps.setDate(3, to);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                
+            if (rs.next()) {               
                 money = rs.getInt("Total");
             }
         } catch (SQLException ex) {
@@ -125,6 +124,22 @@ public class CalculateDBContext extends DBContext {
             String sql = "SELECT DATEDIFF(day,?,GETDATE()) AS DateDiff";
             PreparedStatement ps = connect.prepareStatement(sql);            
             ps.setDate(1, d);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                date = rs.getInt("DateDiff");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CalculateDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return date;
+    }
+    public int getDateBetween(Date from,Date to) {
+        int date = 0;
+        try {
+            String sql = "SELECT DATEDIFF(day,?,?) AS DateDiff";
+            PreparedStatement ps = connect.prepareStatement(sql);            
+            ps.setDate(1, from);
+            ps.setDate(2, to);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 date = rs.getInt("DateDiff");
