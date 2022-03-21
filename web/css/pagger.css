@@ -10,7 +10,7 @@ and open the template in the editor.
 #pagger span{
     font-weight: bolder;
     color: red;
-   
+    
 }
 #pagger a{
     border-style: solid;
@@ -25,4 +25,6 @@ and open the template in the editor.
 #pagger{
      margin-top: 5px;
      text-align: center;
+     margin-left: 20px;
+     font-size: 30px;
 }

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Debt;
 import model.List;
 import model.Plan;
 import model.Target;
@@ -136,6 +137,51 @@ public class InsertDBContext extends DBContext {
             ps.setDate(4, l.getTo());
             ps.setInt(5, l.getTprice());
 
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void InsertDebt(Debt l) {
+        String sql = "INSERT INTO [Debt]\n"
+                + "           ([debtid]\n"
+                + "           ,[debtname]\n"
+                + "           ,[debtprice]\n"
+                + "           ,[debtpay]\n"
+                + "           ,[debtleft]\n"
+                + "           ,[debtdate])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        PreparedStatement ps = null;
+        try {
+            ps = connect.prepareStatement(sql);
+            ps.setInt(1, l.getDebtid());
+            ps.setNString(2, l.getDebtname());
+            ps.setInt(3, l.getDebtprice());
+            ps.setInt(4, l.getDebtpay());
+            ps.setInt(5, l.getDebtleft());
+            ps.setDate(6, l.getDebtdate());
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(InsertDBContext.class.getName()).log(Level.SEVERE, null, ex);

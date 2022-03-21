@@ -149,5 +149,20 @@ public class CalculateDBContext extends DBContext {
         }
         return date;
     }
+
+    public int getPriceLeft() {
+        int price = 0;
+        try {
+            String sql = "select sum(debtleft)as total from debt";
+            PreparedStatement ps = connect.prepareStatement(sql);                      
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                price = rs.getInt("total");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CalculateDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return price;
+    }
     
 }

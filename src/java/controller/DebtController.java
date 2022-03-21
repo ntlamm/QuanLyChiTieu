@@ -6,23 +6,24 @@
 package controller;
 
 import dal.CalculateDBContext;
+import dal.DebtDBContext;
 import dal.EditDBContext;
 import dal.GroupDBContext;
-import dal.TargetDBContext;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Debt;
 import model.Group;
-import model.Target;
 
 /**
  *
  * @author Admin
  */
-public class TargetController extends HttpServlet {
+public class DebtController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,37 +36,39 @@ public class TargetController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TargetDBContext pc = new TargetDBContext();
-        CalculateDBContext cc = new CalculateDBContext();
+        DebtDBContext dc = new DebtDBContext();
         EditDBContext ec = new EditDBContext();
-        GroupDBContext gc = new GroupDBContext();
+        GroupDBContext gc =new GroupDBContext();
+        CalculateDBContext cc = new CalculateDBContext();
+         
+        int priceLeft = cc.getPriceLeft();
         
-        int pagesize=5;
+        int pagesize=10;
         String raw_page=request.getParameter("page");
         if(raw_page==null||raw_page.isEmpty()){
             raw_page="1";
         }
         int pageindex=Integer.parseInt(raw_page);
-        int totalrecords = pc.countAll();
+        int totalrecords = dc.countAll();
         int totalpage=(totalrecords%pagesize==0)?totalrecords/pagesize:(totalrecords/pagesize)+1;
         
-        ArrayList<Target> targets = pc.getTargets(pageindex,pagesize);
-        
-        for (Target target : targets) {
-            int price = cc.getPriceInRange(target.getFrom(), target.getTo(), 1) - cc.getPriceInRange(target.getFrom(), target.getTo(), 2);
-            if (price <= 0) {
-                price = 0;
-            }
-            target.setPricesave(price);
-            target.setDayleft(cc.getDate(target.getTo()));
-        }
+        ArrayList<Debt> debts = dc.getDebts(pageindex,pagesize);
         ArrayList<Group> groups = gc.getGroups();
+        for (Debt debt : debts) {
+            int left = debt.getDebtprice() - debt.getDebtpay();
+            if (left >= 0) {
+                debt.setDebtleft(left);
+            }
+            ec.UpdateDebt(debt);
+        }
+        ArrayList<Debt> debtsUpdate = dc.getDebts();
         
-        request.setAttribute("groups", groups);
+        request.setAttribute("totalleft", priceLeft);
         request.setAttribute("totalpage", totalpage);
         request.setAttribute("pageindex", pageindex);
-        request.setAttribute("targets", targets);
-        request.getRequestDispatcher("view/target.jsp").forward(request, response);
+        request.setAttribute("groups", groups);
+        request.setAttribute("debts", debtsUpdate);
+        request.getRequestDispatcher("view/debt.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

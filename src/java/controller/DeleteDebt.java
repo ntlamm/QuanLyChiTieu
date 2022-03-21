@@ -5,24 +5,19 @@
  */
 package controller;
 
-import dal.CalculateDBContext;
-import dal.EditDBContext;
-import dal.GroupDBContext;
-import dal.TargetDBContext;
+import dal.DeleteDBContext;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Group;
-import model.Target;
 
 /**
  *
  * @author Admin
  */
-public class TargetController extends HttpServlet {
+public class DeleteDebt extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,37 +30,10 @@ public class TargetController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TargetDBContext pc = new TargetDBContext();
-        CalculateDBContext cc = new CalculateDBContext();
-        EditDBContext ec = new EditDBContext();
-        GroupDBContext gc = new GroupDBContext();
-        
-        int pagesize=5;
-        String raw_page=request.getParameter("page");
-        if(raw_page==null||raw_page.isEmpty()){
-            raw_page="1";
-        }
-        int pageindex=Integer.parseInt(raw_page);
-        int totalrecords = pc.countAll();
-        int totalpage=(totalrecords%pagesize==0)?totalrecords/pagesize:(totalrecords/pagesize)+1;
-        
-        ArrayList<Target> targets = pc.getTargets(pageindex,pagesize);
-        
-        for (Target target : targets) {
-            int price = cc.getPriceInRange(target.getFrom(), target.getTo(), 1) - cc.getPriceInRange(target.getFrom(), target.getTo(), 2);
-            if (price <= 0) {
-                price = 0;
-            }
-            target.setPricesave(price);
-            target.setDayleft(cc.getDate(target.getTo()));
-        }
-        ArrayList<Group> groups = gc.getGroups();
-        
-        request.setAttribute("groups", groups);
-        request.setAttribute("totalpage", totalpage);
-        request.setAttribute("pageindex", pageindex);
-        request.setAttribute("targets", targets);
-        request.getRequestDispatcher("view/target.jsp").forward(request, response);
+        int id = Integer.parseInt(request.getParameter("id"));
+        DeleteDBContext dc = new DeleteDBContext();
+        dc.DeleteDebt(id);
+        response.sendRedirect("sono");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,24 +5,24 @@
  */
 package controller;
 
-import dal.CalculateDBContext;
-import dal.EditDBContext;
-import dal.GroupDBContext;
+import dal.DebtDBContext;
+import dal.InsertDBContext;
 import dal.TargetDBContext;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Group;
-import model.Target;
+import model.Debt;
 
 /**
  *
  * @author Admin
  */
-public class TargetController extends HttpServlet {
+public class AddDebt extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,37 +35,19 @@ public class TargetController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TargetDBContext pc = new TargetDBContext();
-        CalculateDBContext cc = new CalculateDBContext();
-        EditDBContext ec = new EditDBContext();
-        GroupDBContext gc = new GroupDBContext();
-        
-        int pagesize=5;
-        String raw_page=request.getParameter("page");
-        if(raw_page==null||raw_page.isEmpty()){
-            raw_page="1";
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AddDebt</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AddDebt at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        int pageindex=Integer.parseInt(raw_page);
-        int totalrecords = pc.countAll();
-        int totalpage=(totalrecords%pagesize==0)?totalrecords/pagesize:(totalrecords/pagesize)+1;
-        
-        ArrayList<Target> targets = pc.getTargets(pageindex,pagesize);
-        
-        for (Target target : targets) {
-            int price = cc.getPriceInRange(target.getFrom(), target.getTo(), 1) - cc.getPriceInRange(target.getFrom(), target.getTo(), 2);
-            if (price <= 0) {
-                price = 0;
-            }
-            target.setPricesave(price);
-            target.setDayleft(cc.getDate(target.getTo()));
-        }
-        ArrayList<Group> groups = gc.getGroups();
-        
-        request.setAttribute("groups", groups);
-        request.setAttribute("totalpage", totalpage);
-        request.setAttribute("pageindex", pageindex);
-        request.setAttribute("targets", targets);
-        request.getRequestDispatcher("view/target.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,7 +62,7 @@ public class TargetController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("view/adddebt.jsp").forward(request, response);
     }
 
     /**
@@ -94,7 +76,38 @@ public class TargetController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+
+        String raw_name = request.getParameter("name");
+        String raw_date = request.getParameter("date");
+        String raw_price = request.getParameter("price");
+        String raw_pay = request.getParameter("pay");
+
+        int price = Integer.parseInt(raw_price);
+        int pay = Integer.parseInt(raw_pay);
+        Date date = Date.valueOf(raw_date);      
+        String name = raw_name;
+
+        DebtDBContext  pc = new DebtDBContext();
+        ArrayList<Debt> debts = pc.getDebts();
+        int id = 0;
+        if (debts.isEmpty()) {
+            id = 1;
+        } else {
+            id = debts.get(debts.size() - 1).getDebtid()+ 1;
+        }
+
+        Debt l = new Debt();
+        l.setDebtid(id);
+        l.setDebtdate(date);
+        l.setDebtname(name);
+        l.setDebtprice(price);
+        l.setDebtpay(pay);
+
+        InsertDBContext ic = new InsertDBContext();
+        ic.InsertDebt(l);
+        response.sendRedirect("sono");
     }
 
     /**

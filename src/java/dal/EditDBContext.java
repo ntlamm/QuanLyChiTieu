@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Debt;
 import model.List;
 import model.Plan;
 import model.Target;
@@ -97,7 +98,6 @@ public class EditDBContext extends DBContext {
             }
         }
     }
-    
 
     public void UpdateTarget(Target l) {
         String sql = "UPDATE [Target]\n"
@@ -115,6 +115,44 @@ public class EditDBContext extends DBContext {
             ps.setInt(4, l.getTprice());
             ps.setInt(5, l.getTid());
 
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void UpdateDebt(Debt l) {
+        String sql = "UPDATE [Debt]\n"
+                + "   SET [debtname] = ?\n"
+                + "      ,[debtprice] = ?\n"
+                + "      ,[debtpay] = ?\n"
+                + "      ,[debtleft] = ?\n"
+                + "      ,[debtdate] = ?\n"
+                + " WHERE [debtid] = ?";
+        PreparedStatement ps = null;
+        try {
+            ps = connect.prepareStatement(sql);
+            ps.setNString(1, l.getDebtname());          
+            ps.setInt(2, l.getDebtprice());
+            ps.setInt(3, l.getDebtpay());
+            ps.setInt(4, l.getDebtleft());
+            ps.setDate(5, l.getDebtdate());
+            ps.setInt(6, l.getDebtid());
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
