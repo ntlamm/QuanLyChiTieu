@@ -54,6 +54,7 @@ public class PlanController extends HttpServlet {
             plan.setPaypprice(cc.getMoneyInRange(plan.getFrom(), plan.getTo(), plan.getGroup().getCgroupid()));
             ec.EditPlan(plan);
         }
+        
         ArrayList<Plan> plansUpdate = pc.getPlans();
         for (Plan plan : plansUpdate) {
             plan.setDayleft(cc.getDate(plan.getTo()));

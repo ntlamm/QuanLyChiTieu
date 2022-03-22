@@ -82,9 +82,9 @@ public class DebtDBContext extends DBContext {
     public ArrayList<Debt> getDebts(int pageindex, int pagesize) {
         ArrayList<Debt> debts = new ArrayList<>();
         try {
-            String sql = "select * from(select *,\n"
-                    + "ROW_NUMBER() OVER (ORDER BY debtid ASC) as stt from [Debt]) tb"
-                    + "WHERE stt >=(?-1)* ? +1 AND stt <= ? * ?";
+            String sql = "select * from(select *, "
+                    + "ROW_NUMBER() OVER (ORDER BY debtid ASC) as stt from [Debt]) tb "
+                    + "WHERE stt >=(?-1)*? +1 AND stt <= ? * ?";
             PreparedStatement stm = connect.prepareStatement(sql);
             stm.setInt(1, pageindex);
             stm.setInt(2, pagesize);

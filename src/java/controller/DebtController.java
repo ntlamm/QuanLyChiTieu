@@ -38,21 +38,21 @@ public class DebtController extends HttpServlet {
             throws ServletException, IOException {
         DebtDBContext dc = new DebtDBContext();
         EditDBContext ec = new EditDBContext();
-        GroupDBContext gc =new GroupDBContext();
+        GroupDBContext gc = new GroupDBContext();
         CalculateDBContext cc = new CalculateDBContext();
-         
+
         int priceLeft = cc.getPriceLeft();
-        
-        int pagesize=10;
-        String raw_page=request.getParameter("page");
-        if(raw_page==null||raw_page.isEmpty()){
-            raw_page="1";
+
+        int pagesize = 10;
+        String raw_page = request.getParameter("page");
+        if (raw_page == null || raw_page.isEmpty()) {
+            raw_page = "1";
         }
-        int pageindex=Integer.parseInt(raw_page);
+        int pageindex = Integer.parseInt(raw_page);
         int totalrecords = dc.countAll();
-        int totalpage=(totalrecords%pagesize==0)?totalrecords/pagesize:(totalrecords/pagesize)+1;
-        
-        ArrayList<Debt> debts = dc.getDebts(pageindex,pagesize);
+        int totalpage = (totalrecords % pagesize == 0) ? totalrecords / pagesize : (totalrecords / pagesize) + 1;
+        ArrayList<Debt> debts = dc.getDebts(pageindex, pagesize);
+
         ArrayList<Group> groups = gc.getGroups();
         for (Debt debt : debts) {
             int left = debt.getDebtprice() - debt.getDebtpay();
@@ -61,8 +61,9 @@ public class DebtController extends HttpServlet {
             }
             ec.UpdateDebt(debt);
         }
-        ArrayList<Debt> debtsUpdate = dc.getDebts();
-        
+
+        ArrayList<Debt> debtsUpdate = dc.getDebts(pageindex, pagesize);
+
         request.setAttribute("totalleft", priceLeft);
         request.setAttribute("totalpage", totalpage);
         request.setAttribute("pageindex", pageindex);

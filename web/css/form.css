@@ -1,0 +1,21 @@
+#button{
+    border-radius: 5px;
+    border-width: 1px;
+    background-color: #666666;
+    padding: 10px;
+    padding-left:50px;
+    padding-right:50px;
+    color: white;
+}
+.col-md-4{
+    background-color: whitesmoke;
+    margin-top: 150px;
+    border-radius: 10px;
+    padding-top: 40px;
+}
+.col-md-5{
+    background-color: whitesmoke;
+    margin-top: 100px;
+    padding-top: 40px;
+    border-radius: 10px;
+}

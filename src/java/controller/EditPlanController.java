@@ -26,7 +26,7 @@ import model.Type;
  *
  * @author Admin
  */
-public class EditPlanController extends HttpServlet {
+public class EditPlanController extends BaseAuthenticationController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,7 +64,7 @@ public class EditPlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         GroupDBContext gc = new GroupDBContext();
         PlanDBContext pc = new PlanDBContext();
@@ -87,7 +87,7 @@ public class EditPlanController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
@@ -106,7 +106,10 @@ public class EditPlanController extends HttpServlet {
         CalculateDBContext cc = new CalculateDBContext();
         int moneyInRange = cc.getMoneyInRange(from, to, cgroupid);
         
+        Group g = new Group();
+        g.setCgroupid(cgroupid);
         Plan l = new Plan();
+        l.setGroup(g);
         l.setPid(pid);
         l.setFrom(from);
         l.setTo(to);

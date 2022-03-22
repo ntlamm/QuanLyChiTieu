@@ -81,21 +81,6 @@ public class EditDBContext extends DBContext {
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (connect != null) {
-                try {
-                    connect.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
         }
     }
 
@@ -116,23 +101,10 @@ public class EditDBContext extends DBContext {
             ps.setInt(5, l.getTid());
 
             ps.executeUpdate();
+
         } catch (SQLException ex) {
-            Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (connect != null) {
-                try {
-                    connect.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            Logger.getLogger(EditDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -147,30 +119,17 @@ public class EditDBContext extends DBContext {
         PreparedStatement ps = null;
         try {
             ps = connect.prepareStatement(sql);
-            ps.setNString(1, l.getDebtname());          
+            ps.setNString(1, l.getDebtname());
             ps.setInt(2, l.getDebtprice());
             ps.setInt(3, l.getDebtpay());
             ps.setInt(4, l.getDebtleft());
             ps.setDate(5, l.getDebtdate());
             ps.setInt(6, l.getDebtid());
             ps.executeUpdate();
+
         } catch (SQLException ex) {
-            Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (connect != null) {
-                try {
-                    connect.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(EditDBContext.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            Logger.getLogger(EditDBContext.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
